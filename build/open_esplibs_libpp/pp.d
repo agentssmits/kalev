@@ -1,0 +1,23 @@
+build/open_esplibs_libpp//pp.o: \
+ /home/arturs/esp/esp-open-rtos/open_esplibs/libpp/pp.c \
+ /home/arturs/esp/esp-open-rtos/open_esplibs/include/open_esplibs.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/stdlib.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/ieeefp.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_ansi.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/newlib.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_newlib_version.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/config.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/features.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/xtensa/config/core-isa.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/reent.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_ansi.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_types.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_types.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_default_types.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/lock.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/cdefs.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/stdlib.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/alloca.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/stdint.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_intsup.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_stdint.h
