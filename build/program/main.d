@@ -116,4 +116,5 @@ build/program//main.o: /home/arturs/esp/kalev/main.c \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/list.h \
  /home/arturs/esp/kalev/sensors/sensair.h \
  /home/arturs/esp/kalev/sensors/pressure.h \
- /home/arturs/esp/kalev/wifi/wifi.h /home/arturs/esp/kalev/shmem/shmem.h
+ /home/arturs/esp/kalev/wifi/wifi.h /home/arturs/esp/kalev/shmem/shmem.h \
+ /home/arturs/esp/kalev/control/control.h

@@ -127,4 +127,5 @@ build/wifi//wifi.o: /home/arturs/esp/kalev/wifi/wifi.c \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/sys.h \
  /home/arturs/esp/esp-open-rtos/lwip/include/arch/sys_arch.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/semphr.h \
- /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/queue.h
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/queue.h \
+ /home/arturs/esp/kalev/wifi/../shmem/shmem.h

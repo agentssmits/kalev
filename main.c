@@ -18,6 +18,7 @@
 #include "sensors/pressure.h"
 #include "wifi/wifi.h"
 #include "shmem/shmem.h"
+#include "control/control.h"
 
 static void co2_task(void *pvParameters)
 {
@@ -45,7 +46,16 @@ static void serverTask(void *pvParameters)
 
 	while (1) {
 		serverStateMachine();
-		vTaskDelay(100 / portTICK_PERIOD_MS);
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
+	}
+}
+
+static void controlTask(void *pvParameters)
+{
+
+	while (1) {
+		windowControl();
+		vTaskDelay(5000 / portTICK_PERIOD_MS);
 	}
 }
 
@@ -59,7 +69,8 @@ void user_init(void)
 	
 	initShmem();
 
-    xTaskCreate(bmp280_task_normal, "bmp280_task", 256, NULL, 2, NULL);
-	xTaskCreate(co2_task, "co2_task", 256, NULL, 2, NULL);
-	xTaskCreate(serverTask, "serverTask", 512, NULL, 2, NULL);
+    xTaskCreate(bmp280_task_normal, "bmp280_task", 256, NULL, 5, NULL);
+	xTaskCreate(co2_task, "co2_task", 256, NULL, 5, NULL);
+	xTaskCreate(serverTask, "serverTask", 512, NULL, 4, NULL);
+	xTaskCreate(controlTask, "controlTask", 256, NULL, 2, NULL);
 }

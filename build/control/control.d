@@ -1,5 +1,6 @@
-build/shmem//shmem.o: /home/arturs/esp/kalev/shmem/shmem.c \
- /home/arturs/esp/kalev/shmem/shmem.h \
+build/control//control.o: /home/arturs/esp/kalev/control/control.c \
+ /home/arturs/esp/kalev/control/control.h \
+ /home/arturs/esp/kalev/control/../shmem/shmem.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/FreeRTOS.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/stdint.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_default_types.h \
@@ -51,8 +52,4 @@ build/shmem//shmem.o: /home/arturs/esp/kalev/shmem/shmem.c \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/portable/esp8266/xtensa_context.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/portable/esp8266/xtensa_timer.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/mpu_wrappers.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/reent.h \
- /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/semphr.h \
- /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/queue.h \
- /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/task.h \
- /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/list.h
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/reent.h

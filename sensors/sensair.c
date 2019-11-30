@@ -5,6 +5,8 @@
 #include <FreeRTOS.h>
 #include <task.h>
 
+#include "../shmem/shmem.h"
+
 #define RX_PIN 4
 #define TX_PIN 5
 
@@ -61,5 +63,7 @@ unsigned long requestCO2()
 	
 	int high = co2ResponseArr[3];                         //high byte for value is 4th byte in packet in the packet
 	int low = co2ResponseArr[4];                          //low byte for value is 5th byte in the packet
-	return high*256 + low;             //Combine high byte and low byte with this formula to get value
+	long int retVal = high*256 + low;             //Combine high byte and low byte with this formula to get value
+	setCO2(retVal);
+	return retVal;
 }

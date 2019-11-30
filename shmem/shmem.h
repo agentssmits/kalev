@@ -12,5 +12,9 @@ struct SHMEM {
 };
 
 void initShmem();
+void setCO2(long int CO2);
+long int getCO2();
+void setWindowStatus(uint8_t status);
+uint8_t getWindowStatus();
 
 #endif
