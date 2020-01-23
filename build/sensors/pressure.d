@@ -115,4 +115,8 @@ build/sensors//pressure.o: /home/arturs/esp/kalev/sensors/pressure.c \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/task.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/list.h \
  /home/arturs/esp/esp-open-rtos/extras/softuart/../i2c/i2c.h \
- /home/arturs/esp/esp-open-rtos/extras/softuart/../bmp280/bmp280.h
+ /home/arturs/esp/esp-open-rtos/extras/softuart/../bmp280/bmp280.h \
+ shmem/shmem.h mqtt/mqtt.h /home/arturs/esp/kalev/sensors/../globals.h \
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/semphr.h \
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/queue.h \
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/task.h

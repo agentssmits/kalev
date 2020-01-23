@@ -32,6 +32,15 @@ void setCO2(long int CO2)
 	xSemaphoreGive(xMutex);
 }
 
+void setPressure(float temperature, float humidity, float pressure)
+{
+	xSemaphoreTake(xMutex, portMAX_DELAY);
+	shMem.temperature = temperature;
+	shMem.humidity = humidity;
+	shMem.pressure = pressure;
+	xSemaphoreGive(xMutex);
+}
+
 void setWindowStatus(uint8_t status)
 {
 	xSemaphoreTake(xMutex, portMAX_DELAY);

@@ -52,4 +52,10 @@ build/control//control.o: /home/arturs/esp/kalev/control/control.c \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/portable/esp8266/xtensa_context.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/portable/esp8266/xtensa_timer.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/mpu_wrappers.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/reent.h
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/reent.h \
+ /home/arturs/esp/kalev/control/../mqtt/mqtt.h \
+ /home/arturs/esp/kalev/control/../globals.h \
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/semphr.h \
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/queue.h \
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/task.h \
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/list.h

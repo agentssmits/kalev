@@ -114,4 +114,8 @@ build/sensors//sensair.o: /home/arturs/esp/kalev/sensors/sensair.c \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/reent.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/task.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/list.h \
- /home/arturs/esp/kalev/sensors/../shmem/shmem.h
+ mqtt/mqtt.h /home/arturs/esp/kalev/sensors/../globals.h \
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/semphr.h \
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/queue.h \
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/task.h \
+ shmem/shmem.h

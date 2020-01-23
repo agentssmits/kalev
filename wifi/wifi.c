@@ -17,9 +17,8 @@
 #include <lwip/api.h>
 
 #include "../shmem/shmem.h"
-
-#define AP_SSID "kalev"
-#define AP_PSK "legolego"
+#include "../credentials.h"
+#include "../globals.h"
 
 #define TELNET_PORT 23
 
@@ -27,21 +26,25 @@
 
 
 enum SERVER_STATES {SERVER_INIT, WAIT_CONN, WRITE_CLIENT, READ_CLIENT, CLOSE_CONN};
+enum STA_STATES {CONNECTING, CONNECTED, RECONNECT};
 enum SERVER_STATES serverState = SERVER_INIT;
+enum STA_STATES staState = CONNECTING;
 typedef enum SERVER_RET {NEW_CLIENT, NO_CLIENT} serverRet;
 
 struct netconn *client = NULL;
 struct netconn *nc;
 ip_addr_t client_addr;
-err_t errCode;
+err_t netconnErrCode;
 
-void printErr(char* msg)
+SemaphoreHandle_t wifi_alive;
+
+void printNetconnErr(char* msg)
 {
-	if (errCode == ERR_OK)
+	if (netconnErrCode == ERR_OK)
 		return;
 	
-	printf("%s failed with code %d: ", msg, errCode);
-	switch (errCode){
+	printf("%s failed with code %d: ", msg, netconnErrCode);
+	switch (netconnErrCode){
 		case ERR_MEM:
 			printf("Out of memory!\n");
 			break;
@@ -96,10 +99,37 @@ void printErr(char* msg)
 	}
 }
 
-err_t initAP()
+void printStaStat(uint8_t status)
 {
+	switch (status) {
+		case STATION_GOT_IP:
+			printf("WiFi: Connected\r\n");
+			break;
+		case STATION_WRONG_PASSWORD:
+			printf("WiFi: wrong password\n\r");
+			break;
+		case STATION_NO_AP_FOUND:
+			printf("WiFi: AP not found\n\r");
+			break;
+		case STATION_CONNECT_FAIL:
+			printf("WiFi: connection failed\r\n");
+			break;
+		case STATION_IDLE:
+			printf("WiFi: station idle\r\n");
+			break;
+		case STATION_CONNECTING:
+			printf("WiFi: connecting\r\n");
+			break;
+		default:
+			break;
+	}
+
+}
+
+err_t initAP()
+{	
 	struct ip_info ap_ip;
-    IP4_ADDR(&ap_ip.ip, 192, 168, 0, 1);
+    IP4_ADDR(&ap_ip.ip, 172, 16, 0, 1);
     IP4_ADDR(&ap_ip.gw, 0, 0, 0, 0);
     IP4_ADDR(&ap_ip.netmask, 255, 255, 255, 0);
     if (!sdk_wifi_set_ip_info(1, &ap_ip)){
@@ -107,10 +137,19 @@ err_t initAP()
 		return ERR_CONN;
 	}
 	
-	if (!sdk_wifi_set_opmode(SOFTAP_MODE)){
+	if (!sdk_wifi_set_opmode(STATIONAP_MODE)){ // was SOFTAP_MODE
 		printf("sdk_wifi_set_opmode failed!\n");
 		return ERR_CONN;
 	}
+
+	struct sdk_station_config sta_config = {
+        .ssid = STA_SSID,
+        .password = STA_PASS,
+    };
+
+    printf("WiFi: connecting to WiFi\n\r");
+    sdk_wifi_station_set_config(&sta_config);
+	sdk_wifi_station_set_auto_connect(true);
 	
 	struct sdk_softap_config ap_config = {.ssid = AP_SSID, 
 										  .ssid_hidden = 0, 
@@ -124,14 +163,13 @@ err_t initAP()
 		printf("sdk_wifi_softap_set_config failed!");
 		return ERR_CONN;
 	}
-
 	return ERR_OK;
 }
 
 void startDHCP()
 {
 	ip_addr_t first_client_ip;
-    IP4_ADDR(&first_client_ip, 192, 168, 0, 2);
+    IP4_ADDR(&first_client_ip, 172, 16, 0, 2);
     dhcpserver_start(&first_client_ip, 4);
 }
 
@@ -143,29 +181,29 @@ err_t initServer()
         return ERR_CONN;
     }
 	
-    errCode = netconn_bind(nc, IP_ANY_TYPE, TELNET_PORT);
-	printErr("netconn_bind");
+    netconnErrCode = netconn_bind(nc, IP_ANY_TYPE, TELNET_PORT);
+	printNetconnErr("netconn_bind");
 	
-    errCode = netconn_listen(nc);
-	printErr("netconn_bind");
+    netconnErrCode = netconn_listen(nc);
+	printNetconnErr("netconn_bind");
 	
-	return errCode;
+	return netconnErrCode;
 }
 
 serverRet waitConn()
 {
-	errCode = netconn_accept(nc, &client);
+	netconnErrCode = netconn_accept(nc, &client);
 	
-	if (errCode != ERR_OK){
-		printErr("netconn_accept");
+	if (netconnErrCode != ERR_OK){
+		printNetconnErr("netconn_accept");
 		if (client)
 			netconn_delete(client);
 		return NO_CLIENT;
 	} 
 
 	uint16_t port_ignore;
-	errCode = netconn_peer(client, &client_addr, &port_ignore);
-	printErr("netconn_peer");
+	netconnErrCode = netconn_peer(client, &client_addr, &port_ignore);
+	printNetconnErr("netconn_peer");
 	
 	netconn_set_nonblocking(client, true);
 	netconn_set_recvtimeout(client, 1000);
@@ -178,28 +216,28 @@ err_t writeClient()
 	if (snprintf(buf, sizeof(buf), "%d,%ld\n", getWindowStatus(), getCO2()) < 0)
 		printf("snprintf failed!");
 	
-	printf("write start...");
+	//printf("write start...");
 	size_t written = 0;
 	size_t len = strlen(buf);
 	
-	TickType_t end = xTaskGetTickCount() + 5000*portTICK_PERIOD_MS;
+ 	TickType_t end = xTaskGetTickCount() + 5000*portTICK_PERIOD_MS;
 	do {
-		errCode = netconn_write_partly(client, buf, len, NETCONN_COPY, &written);
-		if (errCode != ERR_OK) {
-			printErr("netconn_write_partly");
-			return errCode;
+		netconnErrCode = netconn_write_partly(client, buf, len, NETCONN_COPY, &written);
+		if (netconnErrCode != ERR_OK) {
+			printNetconnErr("netconn_write_partly");
+			return netconnErrCode;
 		}
 		
 		if (xTaskGetTickCount() > end) {
 			printf("Write loop timeout!\n");
 			break;
 		}
-	} while (written != len);
+	} while (written != len); 
 	
-	//err_t retVal =  netconn_write(client, buf, strlen(buf), NETCONN_COPY);
-	printf("end\n");
-	//return retVal;
-	return ERR_OK;
+	//err_t netconnErrCode =  netconn_write(client, buf, strlen(buf), NETCONN_COPY);
+	//printf("end with netconnErrCode %d\n", netconnErrCode);
+	return netconnErrCode;
+	//return ERR_OK;
 }
 
 err_t readClient()
@@ -209,26 +247,26 @@ err_t readClient()
 	memset(recvBuf, '\0', 127);
 	static uint8_t wouldBlockCount = 0;
 	
-	printf("read start...");
-	errCode = netconn_recv(client, &buf);
-	if (errCode == ERR_OK) {
+	//printf("read start...");
+	netconnErrCode = netconn_recv(client, &buf);
+	if (netconnErrCode == ERR_OK) {
 		netbuf_copy(buf, recvBuf, 127);	
-		printf("RX: %s", recvBuf);
+		//printf("RX: %s", recvBuf);
 		memset(recvBuf, '\0', 127);
 		netbuf_delete(buf);
 	}
 	
 	//This is workaround to ignore first occurance of ERR_WOULDBLOCK
-	if (errCode == ERR_WOULDBLOCK)
+	if (netconnErrCode == ERR_WOULDBLOCK)
 		wouldBlockCount++;
 		if (wouldBlockCount > 3) 
 			wouldBlockCount = 0;
 		else
-			errCode = ERR_OK;
+			netconnErrCode = ERR_OK;
 	
 	
-	printf("end with errcode %d\n", errCode);
-	return errCode; 
+	//printf("end with netconnErrCode %d\n", netconnErrCode);
+	return netconnErrCode; 
 }
 
 void serverStateMachine()
@@ -244,6 +282,7 @@ void serverStateMachine()
 			serverState = WAIT_CONN;
 			break;
 		case WAIT_CONN:
+			printf("Waiting for client!");
 			if (waitConn() == NEW_CLIENT)
 				serverState = WRITE_CLIENT;
 			break;
@@ -271,6 +310,50 @@ void serverStateMachine()
 			break;
 		default:
 			printf("Unsupported state %d!\n", serverState);
+			break;
+	}
+}
+
+void stationStateMachine()
+{
+    uint8_t status  = 0;
+	switch (staState) {
+		case CONNECTING:
+			status = sdk_wifi_station_get_connect_status();
+			printStaStat(status);
+			if (status == STATION_GOT_IP) {
+				xSemaphoreGive( wifi_alive );
+				staState = CONNECTED;
+			} 
+			
+			break;
+		case CONNECTED:
+			status = sdk_wifi_station_get_connect_status();
+			if (status == STATION_GOT_IP)
+				xSemaphoreGive(wifi_alive);
+			else {
+				printStaStat(status);
+				staState = RECONNECT;
+			}
+			break;
+		case RECONNECT:
+			printf("WiFi: reconnecting\n\r");
+			sdk_wifi_station_disconnect();
+			
+			struct sdk_station_config sta_config = {
+			.ssid = STA_SSID,
+			.password = STA_PASS,
+			};
+
+			sdk_wifi_set_opmode(STATIONAP_MODE);
+			sdk_wifi_station_set_auto_connect(true);
+			sdk_wifi_station_set_config(&sta_config);
+			sdk_wifi_station_connect();
+			staState = CONNECTING;
+			break;
+		default:
+			printf("Unsupported state %d!\n", staState);
+			staState = RECONNECT;
 			break;
 	}
 }

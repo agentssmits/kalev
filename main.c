@@ -14,20 +14,21 @@
 #include <FreeRTOS.h>
 #include <task.h>
 
+#include "globals.h"
 #include "sensors/sensair.h"
 #include "sensors/pressure.h"
 #include "wifi/wifi.h"
 #include "shmem/shmem.h"
 #include "control/control.h"
+#include "mqtt/mqtt.h"
 
 static void co2_task(void *pvParameters)
 {
 	initCO2();
 
 	while (1) {
-		long int co2 = requestCO2();
-		printf("CO2: %ld\n", co2);
-		vTaskDelay(5000 / portTICK_PERIOD_MS);
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
+		requestCO2();
 	}
 }
 
@@ -36,8 +37,8 @@ static void bmp280_task_normal(void *pvParameters)
 	initBmp280();
 	
 	while (1) {
-		getBmp280();
 		vTaskDelay(5000 / portTICK_PERIOD_MS);
+		getBmp280();
 	}
 }
 
@@ -50,12 +51,21 @@ static void serverTask(void *pvParameters)
 	}
 }
 
+static void staTask(void *pvParameters)
+{
+
+	while (1) {
+		stationStateMachine();
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
+	}
+}
+
 static void controlTask(void *pvParameters)
 {
 
 	while (1) {
 		windowControl();
-		vTaskDelay(5000 / portTICK_PERIOD_MS);
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
 	}
 }
 
@@ -67,10 +77,15 @@ void user_init(void)
     printf("SDK version:%s\n\n", sdk_system_get_sdk_version());
 	printf("GIT version : %s\n", GITSHORTREV);
 	
+	vSemaphoreCreateBinary(wifi_alive);
+	publish_queue = xQueueCreate(10, MQTT_MSG_LEN);
+	
 	initShmem();
 
-    xTaskCreate(bmp280_task_normal, "bmp280_task", 256, NULL, 5, NULL);
+    xTaskCreate(bmp280_task_normal, "bmp280_task", 456, NULL, 5, NULL);
 	xTaskCreate(co2_task, "co2_task", 256, NULL, 5, NULL);
-	xTaskCreate(serverTask, "serverTask", 512, NULL, 4, NULL);
-	xTaskCreate(controlTask, "controlTask", 256, NULL, 2, NULL);
+	xTaskCreate(serverTask, "serverTask", 512, NULL, 5, NULL);
+	xTaskCreate(staTask, "staTask", 512, NULL, 5, NULL);
+    xTaskCreate(&mqtt_task, "mqtt_task", 1024, NULL, 4, NULL);
+	xTaskCreate(controlTask, "controlTask", 256, NULL, 1, NULL);
 }

@@ -1,7 +1,14 @@
-build/lwip//lwip/src/apps/mqtt/mqtt.o: \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/apps/mqtt/mqtt.c \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/apps/mqtt.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/apps/mqtt_opts.h \
+build/paho_mqtt_c//MQTTESP8266.o: \
+ /home/arturs/esp/esp-open-rtos/extras/paho_mqtt_c/MQTTESP8266.c \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp_common.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/stdint.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_default_types.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/features.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_newlib_version.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_intsup.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_stdint.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp_misc.h \
+ /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/ip_addr.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/opt.h \
  /home/arturs/esp/esp-open-rtos/lwip/include/lwipopts.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/debug.h \
@@ -10,20 +17,16 @@ build/lwip//lwip/src/apps/mqtt/mqtt.o: \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/stdio.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_ansi.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/newlib.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_newlib_version.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/config.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/ieeefp.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/features.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/xtensa/config/core-isa.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/cdefs.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_default_types.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/reent.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_ansi.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_types.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_types.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/lock.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/types.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_stdint.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/endian.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_endian.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/select.h \
@@ -38,8 +41,6 @@ build/lwip//lwip/src/apps/mqtt/mqtt.o: \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/stdlib.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/stdlib.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/alloca.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/stdint.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_intsup.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/time.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/time.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/time.h \
@@ -54,33 +55,41 @@ build/lwip//lwip/src/apps/mqtt/mqtt.o: \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/inttypes.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/limits.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/ctype.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/err.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/ip_addr.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/def.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/ip4_addr.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/ip6_addr.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/def.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/prot/iana.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/apps/mqtt_priv.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/altcp.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/tcp.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/tcpbase.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/mem.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/pbuf.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/ip.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp_wifi.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp_softap.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp_sta.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/queue.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp_system.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp_timer.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp8266/esp8266.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp8266/ets_sys.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp8266/eagle_soc.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp8266/gpio_register.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp8266/pin_mux_register.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp8266/spi_register.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp8266/timer_register.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/esp8266/uart_register.h \
+ /home/arturs/esp/esp-open-rtos/include/espressif/spi_flash.h \
+ /home/arturs/esp/esp-open-rtos/core/include/flashchip.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/unistd.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/unistd.h \
+ /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/sockets.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/netif.h \
+ /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/err.h \
+ /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/pbuf.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/stats.h \
+ /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/mem.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/memp.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/priv/memp_std.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/priv/memp_priv.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/priv/mem_priv.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/ip4.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/prot/ip4.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/ip6.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/prot/ip.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/icmp.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/prot/icmp.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/timeouts.h \
+ /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/inet.h \
+ /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/errno.h \
+ /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/netdb.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/sys.h \
  /home/arturs/esp/esp-open-rtos/lwip/include/arch/sys_arch.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/FreeRTOS.h \
@@ -125,8 +134,7 @@ build/lwip//lwip/src/apps/mqtt/mqtt.o: \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/task.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/semphr.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/queue.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/altcp_tcp.h \
- /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/altcp_tls.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/string.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/strings.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/string.h
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/string.h \
+ /home/arturs/esp/esp-open-rtos/extras/paho_mqtt_c/MQTTESP8266.h
