@@ -8,6 +8,7 @@
 #include "mqtt/mqtt.h"
 #include "../globals.h"
 #include "shmem/shmem.h"
+#include "filter.h"
 
 #define RX_PIN 4
 #define TX_PIN 5
@@ -43,6 +44,7 @@ char initCO2()
 unsigned long requestCO2()
 {
 	unsigned int timeout;
+	static uint8_t callCount = 0;
 	softuart_put_array(co2RequestArr, co2RequestLen);
 	sdk_os_delay_us(10000); 
 
@@ -65,7 +67,22 @@ unsigned long requestCO2()
 	
 	int high = co2ResponseArr[3];                         //high byte for value is 4th byte in packet in the packet
 	int low = co2ResponseArr[4];                          //low byte for value is 5th byte in the packet
-	long int retVal = high*256 + low;             //Combine high byte and low byte with this formula to get value
+	unsigned long retVal = high*256 + low;             //Combine high byte and low byte with this formula to get value
+	
+	// keep measured value in some range
+	if (retVal > 20000)
+		retVal = 20000;
+	else if (retVal < 400)
+		retVal = 400;
+	
+	// init median filter if it is first call
+	if (callCount == 0) {
+		initFilterCO2(retVal);
+		callCount++;
+		return retVal;
+	}
+	
+	retVal = filterCO2(retVal);
 	setCO2(retVal);
 	memset(mqttMsg, 0, MQTT_MSG_LEN);
 	sprintf(mqttMsg, "CO2,%ld\r\n", retVal);
