@@ -21,6 +21,7 @@
 #include "shmem/shmem.h"
 #include "control/control.h"
 #include "mqtt/mqtt.h"
+#include "logging/logging.h"
 
 static void co2_task(void *pvParameters)
 {
@@ -32,13 +33,13 @@ static void co2_task(void *pvParameters)
 	}
 }
 
-static void bmp280_task_normal(void *pvParameters)
+static void bme180_task_normal(void *pvParameters)
 {
-	initBmp280();
+	initBME180();
 	
 	while (1) {
 		vTaskDelay(5000 / portTICK_PERIOD_MS);
-		getBmp280();
+		getBME180();
 	}
 }
 
@@ -71,18 +72,19 @@ static void controlTask(void *pvParameters)
 
 void user_init(void)
 {
-    // setup real UART for now
     uart_set_baud(0, 115200);
 	printf("\n");
-    printf("SDK version:%s\n\n", sdk_system_get_sdk_version());
-	printf("GIT version : %s\n", GITSHORTREV);
+	logStatus("System started!");
+    logStatus("SDK version:%s", sdk_system_get_sdk_version());
+	logStatus("GIT version : %s", GITSHORTREV);
 	
 	vSemaphoreCreateBinary(wifi_alive);
-	publish_queue = xQueueCreate(10, MQTT_MSG_LEN);
+	dataPublishQueue = xQueueCreate(10, MQTT_MSG_LEN);
+	statusPublishQueue = xQueueCreate(10, MQTT_MSG_LEN);
 	
 	initShmem();
 
-    xTaskCreate(bmp280_task_normal, "bmp280_task", 456, NULL, 5, NULL);
+    xTaskCreate(bme180_task_normal, "bmp280_task", 456, NULL, 5, NULL);
 	xTaskCreate(co2_task, "co2_task", 256, NULL, 5, NULL);
 	xTaskCreate(serverTask, "serverTask", 512, NULL, 5, NULL);
 	xTaskCreate(staTask, "staTask", 512, NULL, 5, NULL);

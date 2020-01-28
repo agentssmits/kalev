@@ -1,13 +1,41 @@
 build/control//control.o: /home/arturs/esp/kalev/control/control.c \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/stdio.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_ansi.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/newlib.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_newlib_version.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/config.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/ieeefp.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/features.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/xtensa/config/core-isa.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/cdefs.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_default_types.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/reent.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_ansi.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_types.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_types.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/lock.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/types.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_stdint.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/endian.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_endian.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/select.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_sigset.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_timeval.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/timespec.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_timespec.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_pthreadtypes.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/sched.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/types.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/stdio.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/string.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/xlocale.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/strings.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/string.h \
  /home/arturs/esp/kalev/control/control.h \
  /home/arturs/esp/kalev/control/../shmem/shmem.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/FreeRTOS.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/stdint.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_default_types.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/features.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_newlib_version.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_intsup.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_stdint.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/FreeRTOSConfig.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/projdefs.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/portable.h \
@@ -15,7 +43,6 @@ build/control//control.o: /home/arturs/esp/kalev/control/control.c \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/portable/esp8266/portmacro.h \
  /home/arturs/esp/esp-open-rtos/core/include/esp8266.h \
  /home/arturs/esp/esp-open-rtos/core/include/common_macros.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/cdefs.h \
  /home/arturs/esp/esp-open-rtos/core/include/esp/registers.h \
  /home/arturs/esp/esp-open-rtos/core/include/common_macros.h \
  /home/arturs/esp/esp-open-rtos/core/include/esp/types.h \
@@ -39,14 +66,6 @@ build/control//control.o: /home/arturs/esp/kalev/control/control.c \
  /home/arturs/esp/esp-open-rtos/core/include/esp/timer.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/errno.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/errno.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/reent.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/_ansi.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/newlib.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/config.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/ieeefp.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_types.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_types.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/lock.h \
  /home/arturs/esp/esp-open-rtos/include/espressif/esp8266/ets_sys.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/portable/esp8266/xtensa_rtos.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/portable/esp8266/xtensa_context.h \

@@ -2,6 +2,7 @@
 #include "../shmem/shmem.h"
 #include "../credentials.h"
 #include "../globals.h"
+#include "../logging/logging.h"
 
 #include "espressif/esp_common.h"
 #include "esp/uart.h"
@@ -17,7 +18,8 @@
 #include <paho_mqtt_c/MQTTESP8266.h>
 #include <paho_mqtt_c/MQTTClient.h>
 
-QueueHandle_t publish_queue;
+QueueHandle_t dataPublishQueue;
+QueueHandle_t statusPublishQueue;
 
 static const char *  get_my_id(void)
 {
@@ -44,6 +46,27 @@ static const char *  get_my_id(void)
     return my_id;
 }
 
+int publish(const char* topic, QueueHandle_t* queue, mqtt_client_t* client)
+{
+	char msg[MQTT_MSG_LEN - 1] = "\0";
+	int ret = MQTT_SUCCESS;
+	while(xQueueReceive(*queue, (void *)msg, 0) == pdTRUE){
+		mqtt_message_t message;
+		message.payload = msg;
+		message.payloadlen = MQTT_MSG_LEN;
+		message.dup = 0;
+		message.qos = MQTT_QOS1;
+		message.retained = 0;
+		ret = mqtt_publish(client, topic, &message);
+		if (ret != MQTT_SUCCESS) {
+			logStatus("message publish err: %d", ret );
+			break;
+		}
+	}
+	
+	return ret;
+}
+
 void  mqtt_task(void *pvParameters)
 {
 	xSemaphoreTake(wifi_alive, portMAX_DELAY);
@@ -67,7 +90,7 @@ void  mqtt_task(void *pvParameters)
         printf("%s: (Re)connecting to MQTT server %s ... ",__func__, MQTT_HOST);
         ret = mqtt_network_connect(&network, MQTT_HOST, MQTT_PORT);
         if( ret ){
-            printf("error: %d\n\r", ret);
+            logStatus("mqtt netw err: %d", ret);
             taskYIELD();
             continue;
         }
@@ -85,11 +108,10 @@ void  mqtt_task(void *pvParameters)
         printf("Send MQTT connect ... ");
         ret = mqtt_connect(&client, &data);
         if(ret){
-            printf("error: %d\n\r", ret);
+            logStatus("mqtt conn err: %d", ret);
             mqtt_network_disconnect(&network);
 			
 			sdk_wifi_station_disconnect();
-			//sdk_wifi_station_connect();
 			failCount++;
 			if (failCount > 5)
 				sdk_system_restart();
@@ -98,39 +120,37 @@ void  mqtt_task(void *pvParameters)
         }
         printf("done\r\n");
 		failCount = 0;
-        xQueueReset(publish_queue);
+        xQueueReset(dataPublishQueue);
+		xQueueReset(statusPublishQueue);
 
         while(1){
-
-            char msg[MQTT_MSG_LEN - 1] = "\0";
-            while(xQueueReceive(publish_queue, (void *)msg, 0) ==
-                  pdTRUE){
-                //printf("got message to publish\r\n");
-                mqtt_message_t message;
-                message.payload = msg;
-                message.payloadlen = MQTT_MSG_LEN;
-                message.dup = 0;
-                message.qos = MQTT_QOS1;
-                message.retained = 0;
-                ret = mqtt_publish(&client, TOPIC, &message);
-                if (ret != MQTT_SUCCESS ){
-                    printf("error while publishing message: %d\n", ret );
-                    break;
-                }
-            }
-
+			ret = publish(DATA_TOPIC, &dataPublishQueue, &client);
+			if (ret != MQTT_SUCCESS ){
+				break;
+			}
+			
+			ret = publish(STS_TOPIC, &statusPublishQueue, &client);
+			if (ret != MQTT_SUCCESS ){
+				break;
+			}
             ret = mqtt_yield(&client, 1000);
             if (ret == MQTT_DISCONNECTED)
                 break;
         }
-        printf("Connection dropped, request restart\n\r");
+        logStatus("Conn dropped, request restart");
         mqtt_network_disconnect(&network);
         taskYIELD();
     }
 }
 
-void mqttPublish()
+void mqttPublishData()
 {
-	if (xQueueSend(publish_queue, (void *)mqttMsg, 0) == pdFALSE) 
-		printf("Publish queue overflow.\r\n");
+	if (xQueueSend(dataPublishQueue, (void *)mqttMsg, 0) == pdFALSE) 
+		logStatus("data queue overflow");
+}
+
+void mqttPublishStatus(char* buf)
+{
+	if (xQueueSend(statusPublishQueue, (void *)buf, 0) == pdFALSE) 
+		printf("sts queue overflow");
 }

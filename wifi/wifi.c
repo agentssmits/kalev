@@ -19,6 +19,7 @@
 #include "../shmem/shmem.h"
 #include "../credentials.h"
 #include "../globals.h"
+#include "../logging/logging.h"
 
 #define TELNET_PORT 23
 
@@ -43,58 +44,58 @@ void printNetconnErr(char* msg)
 	if (netconnErrCode == ERR_OK)
 		return;
 	
-	printf("%s failed with code %d: ", msg, netconnErrCode);
+	logStatus("%s failed with code %d: ", msg, netconnErrCode);
 	switch (netconnErrCode){
 		case ERR_MEM:
-			printf("Out of memory!\n");
+			logStatus("Out of memory");
 			break;
 		case ERR_BUF:
-			printf("Buffer error!\n");
+			logStatus("Buffer error");
 			break;
 		case ERR_TIMEOUT:
-			printf("Timeout!\n");
+			logStatus("Timeout");
 			break;
 		case ERR_RTE:
-			printf("Routing problem!\n");
+			logStatus("Routing problem");
 			break;
 		case ERR_INPROGRESS:
-			printf("Operation in progress!\n");
+			logStatus("Operation in progress");
 			break;
 		case ERR_VAL:
-			printf("Illegal value!\n");
+			logStatus("Illegal value");
 			break;
 		case ERR_WOULDBLOCK:
-			printf("Operation would block!\n");
+			logStatus("Operation would block");
 			break;
 		case ERR_USE:
-			printf("Address in use!\n");
+			logStatus("Address in use");
 			break;
 		case ERR_ALREADY:
-			printf("Already connecting!\n");
+			logStatus("Already connecting");
 			break;
 		case ERR_ISCONN:
-			printf("Conn already established!\n");
+			logStatus("Conn already established");
 			break;
 		case ERR_CONN:
-			printf("Not connected!\n");
+			logStatus("Not connected");
 			break;
 		case ERR_IF:
-			printf("Low-level netif error!\n");
+			logStatus("Low-level netif error");
 			break;
 		case ERR_ABRT:
-			printf("Connection aborted!\n");
+			logStatus("Connection aborted");
 			break;
 		case ERR_RST:
-			printf("Connection reset!\n");
+			logStatus("Connection reset");
 			break;
 		case ERR_CLSD:
-			printf("Connection closed!\n");
+			logStatus("Connection closed");
 			break;
 		case ERR_ARG:
-			printf("Illegal argument!\n");
+			logStatus("Illegal argument");
 			break;
 		default:
-			printf("Unknown lwip err_t error code!\n");
+			logStatus("Unknown lwip err_t error code");
 			break;
 	}
 }
@@ -103,22 +104,22 @@ void printStaStat(uint8_t status)
 {
 	switch (status) {
 		case STATION_GOT_IP:
-			printf("WiFi: Connected\r\n");
+			logStatus("WiFi: Connected");
 			break;
 		case STATION_WRONG_PASSWORD:
-			printf("WiFi: wrong password\n\r");
+			logStatus("WiFi: wrong password");
 			break;
 		case STATION_NO_AP_FOUND:
-			printf("WiFi: AP not found\n\r");
+			logStatus("WiFi: AP not found");
 			break;
 		case STATION_CONNECT_FAIL:
-			printf("WiFi: connection failed\r\n");
+			logStatus("WiFi: connection failed");
 			break;
 		case STATION_IDLE:
-			printf("WiFi: station idle\r\n");
+			logStatus("WiFi: station idle");
 			break;
 		case STATION_CONNECTING:
-			printf("WiFi: connecting\r\n");
+			logStatus("WiFi: connecting");
 			break;
 		default:
 			break;
@@ -133,12 +134,12 @@ err_t initAP()
     IP4_ADDR(&ap_ip.gw, 0, 0, 0, 0);
     IP4_ADDR(&ap_ip.netmask, 255, 255, 255, 0);
     if (!sdk_wifi_set_ip_info(1, &ap_ip)){
-		printf("sdk_wifi_set_ip_info failed!\n");
+		logStatus("sdk_wifi_set_ip_info failed");
 		return ERR_CONN;
 	}
 	
 	if (!sdk_wifi_set_opmode(STATIONAP_MODE)){ // was SOFTAP_MODE
-		printf("sdk_wifi_set_opmode failed!\n");
+		logStatus("sdk_wifi_set_opmode failed");
 		return ERR_CONN;
 	}
 
@@ -152,7 +153,7 @@ err_t initAP()
 	sdk_wifi_station_set_auto_connect(true);
 	
 	struct sdk_softap_config ap_config = {.ssid = AP_SSID, 
-										  .ssid_hidden = 0, 
+										  .ssid_hidden = 1, 
 										  .channel = 3, 
 										  .ssid_len = strlen(AP_SSID), 
 										  .authmode = AUTH_WPA_WPA2_PSK, 
@@ -160,7 +161,7 @@ err_t initAP()
 										  .max_connection = 3, 
 										  .beacon_interval = 100,};
     if (!sdk_wifi_softap_set_config(&ap_config)){
-		printf("sdk_wifi_softap_set_config failed!");
+		logStatus("sdk_wifi_softap_set_config failed");
 		return ERR_CONN;
 	}
 	return ERR_OK;
@@ -177,7 +178,7 @@ err_t initServer()
 {
 	nc = netconn_new(NETCONN_TCP);
     if (!nc){
-        printf("Status monitor: Failed to allocate socket.\r\n");
+        logStatus("allocate socket fail");
         return ERR_CONN;
     }
 	
@@ -214,7 +215,7 @@ err_t writeClient()
 {      
 	static char buf[80];
 	if (snprintf(buf, sizeof(buf), "%d,%ld\n", getWindowStatus(), getCO2()) < 0)
-		printf("snprintf failed!");
+		logStatus("snprintf failed");
 	
 	//printf("write start...");
 	size_t written = 0;
@@ -229,7 +230,7 @@ err_t writeClient()
 		}
 		
 		if (xTaskGetTickCount() > end) {
-			printf("Write loop timeout!\n");
+			logStatus("Write loop timeout");
 			break;
 		}
 	} while (written != len); 
@@ -282,7 +283,7 @@ void serverStateMachine()
 			serverState = WAIT_CONN;
 			break;
 		case WAIT_CONN:
-			printf("Waiting for client!");
+			logStatus("waiting for client");
 			if (waitConn() == NEW_CLIENT)
 				serverState = WRITE_CLIENT;
 			break;
@@ -290,7 +291,7 @@ void serverStateMachine()
 			if (writeClient() == ERR_OK)
 				serverState = READ_CLIENT;
 			else {
-				printf("write failed!\n");
+				logStatus("write failed");
 				serverState = CLOSE_CONN;
 			}
 			break;
@@ -299,17 +300,17 @@ void serverStateMachine()
 			if (status == ERR_OK || status == ERR_TIMEOUT)
 				serverState = WRITE_CLIENT;
 			else {
-				printf("read failed with %d!\n", status);
+				logStatus("read fail err: %d", status);
 				serverState = CLOSE_CONN;
 			}
 			break;
 		case CLOSE_CONN:
-			printf("will close client!\n");
+			logStatus("will close client");
 			netconn_delete(client);
 			serverState = WAIT_CONN;
 			break;
 		default:
-			printf("Unsupported state %d!\n", serverState);
+			logStatus("Unsupported serverState %d", serverState);
 			break;
 	}
 }
@@ -337,7 +338,7 @@ void stationStateMachine()
 			}
 			break;
 		case RECONNECT:
-			printf("WiFi: reconnecting\n\r");
+			logStatus("WiFi: reconnecting");
 			sdk_wifi_station_disconnect();
 			
 			struct sdk_station_config sta_config = {
@@ -352,7 +353,7 @@ void stationStateMachine()
 			staState = CONNECTING;
 			break;
 		default:
-			printf("Unsupported state %d!\n", staState);
+			logStatus("Unsupported staState %d", staState);
 			staState = RECONNECT;
 			break;
 	}

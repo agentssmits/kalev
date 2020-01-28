@@ -130,4 +130,5 @@ build/wifi//wifi.o: /home/arturs/esp/kalev/wifi/wifi.c \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/queue.h \
  /home/arturs/esp/kalev/wifi/../shmem/shmem.h \
  /home/arturs/esp/kalev/wifi/../credentials.h \
- /home/arturs/esp/kalev/wifi/../globals.h
+ /home/arturs/esp/kalev/wifi/../globals.h \
+ /home/arturs/esp/kalev/wifi/../logging/logging.h

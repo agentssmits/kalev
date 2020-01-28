@@ -1,7 +1,7 @@
-#ifndef _BMP280_H
-#define _BMP280_H
+#ifndef _BME180_H
+#define _BME180_H
 
-void initBmp280();
-void getBmp280();
+void initBME180();
+void getBME180();
 
 #endif

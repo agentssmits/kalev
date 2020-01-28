@@ -27,6 +27,10 @@ build/sensors//pressure.o: /home/arturs/esp/kalev/sensors/pressure.c \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/sched.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/types.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/stdio.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/string.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/xlocale.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/strings.h \
+ /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/string.h \
  /home/arturs/esp/esp-open-rtos/include/espressif/esp_common.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/stdint.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/_intsup.h \
@@ -43,7 +47,6 @@ build/sensors//pressure.o: /home/arturs/esp/kalev/sensors/pressure.c \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/time.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/time.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/time.h \
- /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/xlocale.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/machine/_time.h \
  /home/arturs/esp/esp-open-rtos/libc/xtensa-lx106-elf/include/sys/errno.h \
  /home/arturs/esp/esp-open-rtos/core/include/esp/hwrand.h \
@@ -119,4 +122,5 @@ build/sensors//pressure.o: /home/arturs/esp/kalev/sensors/pressure.c \
  shmem/shmem.h mqtt/mqtt.h /home/arturs/esp/kalev/sensors/../globals.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/semphr.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/queue.h \
- /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/task.h
+ /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/task.h \
+ /home/arturs/esp/kalev/sensors/filter.h

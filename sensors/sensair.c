@@ -4,6 +4,7 @@
 #include <espressif/esp_common.h>
 #include <FreeRTOS.h>
 #include <task.h>
+#include <string.h>
 
 #include "mqtt/mqtt.h"
 #include "../globals.h"
@@ -58,7 +59,7 @@ unsigned long requestCO2()
 			if (timeout > 10) {//if it takes too long there was probably an error
 				while(softuart_available(0))               //flush whatever we have
 					softuart_read(0);
-				printf("CO2 sensor read timeout!\n");
+				logStatus("CO2 read timeout");
 				return 0;  //exit and try again later
 			}
 		};
@@ -86,6 +87,6 @@ unsigned long requestCO2()
 	setCO2(retVal);
 	memset(mqttMsg, 0, MQTT_MSG_LEN);
 	sprintf(mqttMsg, "CO2,%ld\r\n", retVal);
-	mqttPublish();
+	mqttPublishData();
 	return retVal;
 }

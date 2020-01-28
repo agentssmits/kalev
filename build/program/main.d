@@ -122,4 +122,5 @@ build/program//main.o: /home/arturs/esp/kalev/main.c \
  /home/arturs/esp/kalev/sensors/pressure.h \
  /home/arturs/esp/kalev/wifi/wifi.h /home/arturs/esp/kalev/shmem/shmem.h \
  /home/arturs/esp/kalev/control/control.h \
- /home/arturs/esp/kalev/mqtt/mqtt.h
+ /home/arturs/esp/kalev/mqtt/mqtt.h \
+ /home/arturs/esp/kalev/logging/logging.h

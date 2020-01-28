@@ -55,23 +55,31 @@ void initFilterPressure(float currentPressure)
 	initMedianFilter(currentPressure, pressureArray);
 }
 
+void initFilterBME180(float currentTemp, float currentHumidity, float currentPressure)
+{
+	initFilterTemp(currentTemp);
+	initFilterHumidity(currentHumidity);
+	initFilterPressure(currentPressure);
+}
+
 unsigned long filterCO2(unsigned long currentCO2)
 {
 	return (unsigned long)medianFilter((float)currentCO2, (float*)CO2Array);
 }
 
-float filterTemp(unsigned long currentTemp)
+float filterTemp(float currentTemp)
 {
 	return medianFilter(currentTemp, tempArray);
 }
 
-float filterHumidity(unsigned long currentHumidity)
+float filterHumidity(float currentHumidity)
 {
 	return medianFilter(currentHumidity, humidityArray);
 }
 
-float filterPressure(unsigned long currentPressure)
+float filterPressure(float currentPressure)
 {
 	return medianFilter(currentPressure, pressureArray);
 }
+
 

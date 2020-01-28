@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+
 #include "control.h"
 #include "../shmem/shmem.h"
 #include "../mqtt/mqtt.h"
@@ -12,7 +15,7 @@ void windowControl()
 		if (prevWindowState != 1) {
 			memset(mqttMsg, 0, MQTT_MSG_LEN);
 			sprintf(mqttMsg, "EV,Win open\r\n");
-			mqttPublish();
+			mqttPublishData();
 			prevWindowState = 1;
 		}
 	}
@@ -21,7 +24,7 @@ void windowControl()
 		if (prevWindowState != 0) {
 			memset(mqttMsg, 0, MQTT_MSG_LEN);
 			sprintf(mqttMsg, "EV,Win close\r\n");
-			mqttPublish();
+			mqttPublishData();
 			prevWindowState = 0;
 		}
 	}

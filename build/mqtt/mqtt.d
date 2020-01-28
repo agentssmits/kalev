@@ -59,6 +59,7 @@ build/mqtt//mqtt.o: /home/arturs/esp/kalev/mqtt/mqtt.c \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/queue.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/task.h \
  /home/arturs/esp/esp-open-rtos/FreeRTOS/Source/include/list.h \
+ /home/arturs/esp/kalev/mqtt/../logging/logging.h \
  /home/arturs/esp/esp-open-rtos/include/espressif/esp_common.h \
  /home/arturs/esp/esp-open-rtos/include/espressif/esp_misc.h \
  /home/arturs/esp/esp-open-rtos/lwip/lwip/src/include/lwip/ip_addr.h \

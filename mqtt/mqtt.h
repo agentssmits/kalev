@@ -2,6 +2,7 @@
 #define _MQTT_H
 
 void mqtt_task(void *pvParameters);
-void mqttPublish();
+void mqttPublishData();
+void mqttPublishStatus(char* buf);
 
 #endif
