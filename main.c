@@ -28,8 +28,8 @@ static void co2_task(void *pvParameters)
 	initCO2();
 
 	while (1) {
-		vTaskDelay(1000 / portTICK_PERIOD_MS);
-		requestCO2();
+		while (requestCO2() == 0){};
+		vTaskDelay(60000 / portTICK_PERIOD_MS);
 	}
 }
 
@@ -38,8 +38,8 @@ static void bme180_task_normal(void *pvParameters)
 	initBME180();
 	
 	while (1) {
-		vTaskDelay(5000 / portTICK_PERIOD_MS);
 		getBME180();
+		vTaskDelay(60000 / portTICK_PERIOD_MS);
 	}
 }
 
@@ -72,15 +72,22 @@ static void controlTask(void *pvParameters)
 
 void user_init(void)
 {
+	gpio_enable(R_PIN, GPIO_OUTPUT);
+	gpio_enable(G_PIN, GPIO_OUTPUT);
+	gpio_enable(B_PIN, GPIO_OUTPUT);
+	gpio_write(R_PIN, 0);
+	gpio_write(G_PIN, 0);
+	gpio_write(B_PIN, 1);
     uart_set_baud(0, 115200);
 	printf("\n");
-	logStatus("System started!");
-    logStatus("SDK version:%s", sdk_system_get_sdk_version());
-	logStatus("GIT version : %s", GITSHORTREV);
 	
 	vSemaphoreCreateBinary(wifi_alive);
 	dataPublishQueue = xQueueCreate(10, MQTT_MSG_LEN);
 	statusPublishQueue = xQueueCreate(10, MQTT_MSG_LEN);
+	
+	logStatus("System started!");
+    logStatus("SDK version:%s", sdk_system_get_sdk_version());
+	logStatus("GIT version : %s", GITSHORTREV);
 	
 	initShmem();
 
